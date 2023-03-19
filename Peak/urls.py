@@ -21,7 +21,7 @@ from pereval import views
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UsersViewset)
-router.register(r'adds', views.AddViewset)
+router.register(r'submitData', views.AddViewset)
 router.register(r'coords', views.CoordsViewset)
 router.register(r'images', views.ImagesViewset)
 
