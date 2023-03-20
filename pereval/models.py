@@ -15,6 +15,11 @@ class Users(models.Model):
     def __str__(self):
         return f'{self.fam} {self.name} {self.otc}'
 
+    def __eq__(self, other):
+        return self.email == other.email and self.fam == other.fam and self.name == other.name and self.otc == other.otc and self.phone == other.phone
+
+
+
 
 class Coords(models.Model):
     latitude = models.FloatField(verbose_name='Широта')
@@ -23,6 +28,10 @@ class Coords(models.Model):
 
     def __str__(self):
         return f'{self.latitude}, {self.longitude}: {self.height}'
+
+    def __eq__(self, other):
+        return self.height == other.height and self.longitude == other.longitude and self.latitude == other.latitude
+
 
 
 class Add(models.Model):
@@ -51,6 +60,8 @@ class Add(models.Model):
                                     null=True)
     status = models.CharField(max_length=8, choices=MODERATION, default='new')
 
+    def get_images(self):
+        return self.images_set.all()
 
 
     @property

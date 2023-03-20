@@ -68,8 +68,37 @@ class AddSerializer(serializers.HyperlinkedModelSerializer):
     images = ImagesSerializer(many=True)
     status = serializers.CharField(read_only=True)
 
+    def update(self, instance, validated_data):
+        validated_data.pop('user')
+        coords_data = validated_data.pop('coords')
+        images_data = validated_data.pop('images')
+        instance.beauty_title = validated_data.get('beauty_title', instance.beauty_title)
+        instance.title = validated_data.get('title', instance.title)
+        instance.other_titles = validated_data.get('other_titles', instance.other_titles)
+        instance.connect = validated_data.get('connect', instance.connect)
+        instance.add_time = validated_data.get('add_time', instance.add_time)
+        instance.level = validated_data.get('level', instance.level)
+        coords = Coords(**coords_data)
 
+        data_coords = instance.coords
 
+        if not (coords == data_coords):
+
+            data_coords.height = coords.height
+            data_coords.longitude = coords.longitude
+            data_coords.latitude = coords.latitude
+            data_coords.save()
+        instance.save()
+
+        for img in images_data:
+            try:
+
+                instance_image = Images.objects.get(title=img.get('title'), pereval=instance)
+                instance_image.data = img.get('data', instance_image.data)
+                instance_image.save()
+            except:
+                Images.objects.create(pereval=instance, **img)
+        return instance
 
     def create(self, validated_data):
         user_data = validated_data.pop('user')

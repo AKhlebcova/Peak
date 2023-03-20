@@ -50,6 +50,21 @@ class AddViewset(viewsets.ModelViewSet):
             response_data = {'status': exc.status_code, 'message': exc.detail, 'id': None}
             return Response(response_data, status=exc.status_code)
 
+    def partial_update(self, request, pk=None):
+        object_status = self.get_object().status
+        if object_status == 'new':
+            user = Users(**request.data.get('user'))
+            if user == self.get_object().user:
+                self.update(request)
+                response_data = {'state': '1'}
+                return Response(response_data)
+            else:
+                response_data = {'state': '0', 'message': 'невозможно изменить данные о пользователе'}
+                return Response(response_data)
+        else:
+            response_data = {'state': '0', 'message': 'изменять можно толь в статусе new'}
+            return Response(response_data)
+
 
 
 
