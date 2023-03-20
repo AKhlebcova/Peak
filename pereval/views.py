@@ -30,6 +30,13 @@ class AddViewset(viewsets.ModelViewSet):
     queryset = Add.objects.all()
     serializer_class = AddSerializer
 
+    def get_queryset(self):
+        queryset = Add.objects.all()
+        email = self.request.query_params.get('user__email', None)
+        if email is not None:
+            queryset = queryset.filter(user__email=email)
+        return queryset
+
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         try:

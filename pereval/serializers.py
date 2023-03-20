@@ -66,6 +66,10 @@ class AddSerializer(serializers.HyperlinkedModelSerializer):
     coords = CoordsSerializer()
     level = LevelSerialaizer(many=False)
     images = ImagesSerializer(many=True)
+    status = serializers.CharField(read_only=True)
+
+
+
 
     def create(self, validated_data):
         user_data = validated_data.pop('user')
@@ -96,4 +100,5 @@ class AddSerializer(serializers.HyperlinkedModelSerializer):
             'coords',
             'level',
             'images',
+            'status',
         ]
