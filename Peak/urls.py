@@ -18,19 +18,14 @@ from django.urls import path, include
 from rest_framework import routers
 from pereval import views
 
-
 router = routers.DefaultRouter()
 router.register(r'users', views.UsersViewset)
 router.register(r'submitData', views.AddViewset)
 router.register(r'coords', views.CoordsViewset)
 router.register(r'images', views.ImagesViewset)
 
-
-
 urlpatterns = [
-   path('admin/', admin.site.urls),
-   path('', include(router.urls)),
-   path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('admin/', admin.site.urls),
+    path('', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
-
-
