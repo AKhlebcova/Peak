@@ -68,6 +68,22 @@ class AddSerializer(serializers.HyperlinkedModelSerializer):
     images = ImagesSerializer(many=True)
     status = serializers.CharField(read_only=True)
 
+    class Meta:
+        model = Add
+        depth = 1
+        fields = [
+            'beauty_title',
+            'title',
+            'other_titles',
+            'connect',
+            'add_time',
+            'user',
+            'coords',
+            'level',
+            'images',
+            'status',
+        ]
+
     def update(self, instance, validated_data):
         validated_data.pop('user')
         coords_data = validated_data.pop('coords')
@@ -83,7 +99,6 @@ class AddSerializer(serializers.HyperlinkedModelSerializer):
         data_coords = instance.coords
 
         if not (coords == data_coords):
-
             data_coords.height = coords.height
             data_coords.longitude = coords.longitude
             data_coords.latitude = coords.latitude
@@ -115,19 +130,3 @@ class AddSerializer(serializers.HyperlinkedModelSerializer):
         for img in image_data:
             Images.objects.create(pereval=add, **img)
         return add
-
-    class Meta:
-        model = Add
-        depth = 1
-        fields = [
-            'beauty_title',
-            'title',
-            'other_titles',
-            'connect',
-            'add_time',
-            'user',
-            'coords',
-            'level',
-            'images',
-            'status',
-        ]
